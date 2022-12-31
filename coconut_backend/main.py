@@ -16,6 +16,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 def postcard_maker(name, picline, pic_num):
     if 1 > pic_num > 3:
         raise ValueError('pic_num must be between 1 and 3')
@@ -29,7 +30,7 @@ def postcard_maker(name, picline, pic_num):
     to_font = ImageFont.truetype(
         'coconut_backend/fonts/DavysCrappyWrit.ttf', 50)
     draw.text((200, height // 2 - 50),
-              picline, (0, 0, 0), font=font)
+              picline.replace("’", "'"), (0, 0, 0), font=font)
 
     draw.text((200, height // 2 - 120),
               f"To {name},", (0, 0, 0), font=to_font)
@@ -41,17 +42,20 @@ def postcard_maker(name, picline, pic_num):
 def read_root():
     return {'Hello': 'World'}
 
+
 @app.get('/postcard')
 def postcard(name: str, picline: str, gender: str):
     if gender.strip().lower() == "male":
         pic_num = 2
     else:
         pic_num = 1
+        
     im_file = postcard_maker(name, picline, pic_num)
     im = BytesIO()
     im_file.save(im, 'PNG')
     im.seek(0)
     return StreamingResponse(im, media_type='image/png')
+
 
 if __name__ == '__main__':
     app.run()
