@@ -49,8 +49,9 @@ def postcard(name: str, picline: str, gender: str):
         pic_num = 2
     else:
         pic_num = 1
-        
+
     im_file = postcard_maker(name, picline, pic_num)
+    
     im = BytesIO()
     im_file.save(im, 'PNG')
     im.seek(0)
