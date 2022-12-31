@@ -42,7 +42,11 @@ def read_root():
     return {'Hello': 'World'}
 
 @app.get('/postcard')
-def postcard(name: str, picline: str, pic_num: int):
+def postcard(name: str, picline: str, gender: str):
+    if gender.strip().lower() == "male":
+        pic_num = 2
+    else:
+        pic_num = 1
     im_file = postcard_maker(name, picline, pic_num)
     im = BytesIO()
     im_file.save(im, 'PNG')
